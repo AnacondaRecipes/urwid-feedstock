@@ -30,6 +30,20 @@ requirements:
     - typing-extensions
     - wcwidth
 
+# E   ModuleNotFoundError: No module named '_curses'
+{% set deselect_tests_win = " --deselect=tests/test_columns.py::ColumnsTest::test_basic_sizing" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_columns.py::ColumnsTest::test_not_a_widget" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_columns.py::ColumnsTest::test_old_attributes" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_columns.py::ColumnsTest::test_pack_render_broken_sizing" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_event_loops.py::SelectEventLoopTest::test_remove_alarm" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_event_loops.py::SelectEventLoopTest::test_run" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_event_loops.py::SelectEventLoopTest::test_run_in_executor" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_grid_flow.py::GridFlowTest::test_not_fit" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_moved_imports.py::TestMovedImports::test_moved_imports_direct" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_padding.py::PaddingTest::test_insufficient_space" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_padding.py::PaddingTest::test_sizing" %}
+{% set deselect_tests_win = deselect_tests_win + " --deselect=tests/test_pile.py::PileTest::test_not_a_widget" %}
+
 test:
   source_files:
     - tests
@@ -38,7 +52,8 @@ test:
   commands:
     - pip check
     # CI is stuck and never ends on test_vterm.py.
-    - pytest -v tests --ignore=tests/test_vterm.py
+    - pytest -v tests --ignore=tests/test_vterm.py  # [unix]
+    - pytest -v tests {{ deselect_tests_win }} # [win]
   requires:
     - pip
     - pytest
