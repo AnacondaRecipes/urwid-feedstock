@@ -13,8 +13,6 @@ build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: True  # [py<37]
-  # Urwid is a console user interface library for Python on Linux, OSX, Cygwin or other unix-like OS
-  skip: True  # [win]
 
 requirements:
   build:
@@ -51,7 +49,7 @@ about:
   license: LGPL-2.1
   license_family: GPL
   license_file: COPYING
-  description: Urwid is a console user interface library for Python on Linux, OSX, Cygwin or other unix-like OS
+  description: Urwid is a console user interface library for Python on Linux, OSX, Cygwin or other unix-like OS and partially supports Windows OS
   doc_url: https://github.com/urwid/urwid
   dev_url: https://urwid.org
 
