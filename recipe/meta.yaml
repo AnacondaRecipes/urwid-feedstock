@@ -1,37 +1,59 @@
-{% set version = "2.1.2" %}
+{% set name = "urwid" %}
+{% set version = "2.6.16" %}
 
 package:
   name: urwid
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/u/urwid/urwid-{{ version }}.tar.gz
-  sha256: 588bee9c1cb208d0906a9f73c613d2bd32c3ed3702012f51efe318a3f2127eae
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 93ad239939e44c385e64aa00027878b9e5c486d59e855ec8ab5b1e1adcdb32a2
 
 build:
   number: 0
-  skip: true  # [win]
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<37]
+  # Urwid is a console user interface library for Python on Linux, OSX, Cygwin or other unix-like OS
+  skip: True  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
   host:
     - python
     - pip
+    - wheel
+    - setuptools >=61.0.0
+    - setuptools-scm >=7.0
+    - toml
   run:
     - python
+    - typing-extensions
+    - wcwidth
 
 test:
+  source_files:
+    - tests
   imports:
     - urwid
-    - urwid.tests
+  commands:
+    - pip check
+    # CI is stuck and never ends on test_vterm.py.
+    - pytest -v tests --ignore=tests/test_vterm.py
+  requires:
+    - pip
+    - pytest
 
 about:
-  home: http://urwid.org/
-  license: LGPL-2.1
-  license_file: COPYING
+  home: https://urwid.org
   summary: A full-featured console (xterm et al.) user interface library
+  license: LGPL-2.1
+  license_family: GPL
+  license_file: COPYING
+  description: Urwid is a console user interface library for Python on Linux, OSX, Cygwin or other unix-like OS
+  doc_url: https://github.com/urwid/urwid
+  dev_url: https://urwid.org
 
 extra:
   recipe-maintainers:
